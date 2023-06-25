@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario_RU {
+
+  usuarioId Int @id @default(autoincrement())
+  email String @unique @default("")
+  nome String @default("")
+  senha String @default("")
+  cargo String @default("")
+
+}
+
+model Aviso{
+
+  avisoId Int @id @default(autoincrement())
+  titulo String @default("")
+  data DateTime @default(now()) @db.Date
+  autor String @default("")
+  texto String @default("")
+}
+
+model Cardapio_Semanal{
+  cardapioId Int @id @default(autoincrement())
+  cardapio String @db.VarChar
+  data DateTime @default(now()) @db.Date
+  dia_da_semana String @db.VarChar
+}
+
+model Prato{
+  pratoId Int @id @default(autoincrement())
+  nome String @db.VarChar
+  tipo String @db.VarChar
+  avaliacoes Avaliacao[]
+}
+
+model Sugestao{
+  
+  sugestoesId Int @id @default(autoincrement())
+  nome_aluno String @default("")
+  email_aluno String @default("")
+  comentario_aluno String @default("")
+  data DateTime @default(now()) @db.Date
+}
+
+model Avaliacao{
+
+avaliacaoId Int @id @default(autoincrement())
+prato Prato @relation(fields: [pratoId], references: [pratoId])
+pratoId Int
+avaliacao Boolean @default(true)
+
+}
